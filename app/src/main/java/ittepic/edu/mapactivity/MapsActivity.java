@@ -140,6 +140,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onMyLocationChange(Location location) {
                 // ONLOCATIONCHANGED
+                auxLocal = "";
+
+                if (listaCirculos != null) {
+
+                    for (int i = 0; i < listaCirculos.size(); i++) {
+
+                        Location.distanceBetween(location.getLatitude(), location.getLongitude(),
+                                listaCirculos.get(i).getCenter().latitude, listaCirculos.get(i).getCenter().longitude, distance);
+
+                        // System.out.println("CIRCULO: " + listaCirculos.get(i).getRadius() + " D: " + distance[0]);
+
+                        if (distance[0] < listaCirculos.get(i).getRadius()) {
+                            //current location is within circle
+
+                            auxLocal = "1";
+
+                            Picasso.with(MapsActivity.this)
+                                    .load("http://www.tepic.tecnm.mx/images/2012/304/Principal.jpg")
+                                    //.placeholder(R.drawable.user_placeholder)
+                                    // .error(R.drawable.user_placeholder_error)
+                                    .into(imgmarker);
+
+
+                            txtnombre_local.setText(listaPuntos.get(i).getNombreLugar());
+                            txtDireccion.setText(listaPuntos.get(i).getDescripcionLugar());
+
+                        }
+
+                    }
+
+                    if (!auxLocal.equals("")) {
+                        mBottomSheetBehavior1.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    } else {
+                        mBottomSheetBehavior1.setState(BottomSheetBehavior.STATE_COLLAPSED);
+                    }
+                }
 
 
             }
